@@ -19,3 +19,15 @@ export const POST = async (req: NextRequest) => {
         if(error instanceof AxiosError) return NextResponse.json(error.response)
     }
 }
+
+export const GET = async (req: NextRequest) => { 
+    
+    try { 
+        const res = await axios.get('https://jsonplaceholder.typicode.com/posts') 
+        return NextResponse.json({posts: res.data}, {status: 201})
+    } catch(error) { 
+        if(error instanceof AxiosError) return NextResponse.json(error.response)
+    }
+}
+
+
