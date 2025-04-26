@@ -13,19 +13,20 @@ type Post = {
   body: string,
   userId: number
 }
+const url = process.env.NEXT_PUBLIC_URL;
 export default function Home() {
   const [formData, setFormData] = useState<FormData>({title: "", body: "", userId: ""});
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => { 
     
-    axios.get('https://jsonplaceholder.typicode.com/posts').then(res => { 
-      setPosts(res.data.slice(0, 4))
+    axios.get(`${url}/api/users`).then(res => { 
+      setPosts(res.data.posts.slice(0, 4))
     }).catch(err => console.log(err)) 
   }, [])
   const handleUpload = async (e: any) => { 
     e.preventDefault()
     console.log(formData)
-    const res = await axios.post('http://localhost:3000/api/users', {...formData, userId: parseInt(formData.userId.toString())}, {
+    const res = await axios.post(`${url}/api/users`, {...formData, userId: parseInt(formData.userId.toString())}, {
       headers: { "Content-Type": "application/json"}
     })
     console.log(res.data)
