@@ -15,23 +15,31 @@ type Post = {
 }
 const url = process.env.NEXT_PUBLIC_URL;
 export default function Home() {
-  console.log('next public url ', url);
   const [formData, setFormData] = useState<FormData>({title: "", body: "", userId: ""});
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => { 
-    
-    axios.get(`${url}/api/users`).then(res => { 
-      setPosts(res.data.posts.slice(0, 4))
-    }).catch(err => console.log(err)) 
+    fetch('/api/users', {method: 'GET', headers: {
+      'Content-Type': 'application/json'
+    }}).then(async res => { 
+      const posts = (await res.json()).posts;
+      setPosts(posts.slice(0,4))
+    })
+    // axios.get(`${url}/api/users`).then(res => { 
+    //   setPosts(res.data.posts.slice(0, 4))
+    // }).catch(err => console.log(err)) 
   }, [])
   const handleUpload = async (e: any) => { 
     e.preventDefault()
     console.log(formData)
-    const res = await axios.post(`${url}/api/users`, {...formData, userId: parseInt(formData.userId.toString())}, {
-      headers: { "Content-Type": "application/json"}
+    const res = await fetch('/api/users', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json"},
+      body: JSON.stringify({...formData, userId: parseInt(formData.userId.toString())})
     })
-    console.log(res.data)
-    setPosts(p => ([{...res.data}, ...p]))
+    const data = await res.json();
+    console.log(data)
+
+    setPosts(p => ([{...data}, ...p]))
     setFormData({title: "", body: "", userId: ""})
   }
   return (
