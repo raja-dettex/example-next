@@ -15,6 +15,7 @@ type Post = {
 }
 const url = process.env.NEXT_PUBLIC_URL;
 export default function Home() {
+  console.log('next public url ', url);
   const [formData, setFormData] = useState<FormData>({title: "", body: "", userId: ""});
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => { 
