@@ -3,10 +3,10 @@ import axios, { AxiosError } from 'axios'
 export const POST = async (req: NextRequest) => { 
     const data = await req.json()
     if(!data.title  || !data.body || !data.userId) {
-        NextResponse.json({
+        return NextResponse.json({
             message: "not a valid request body"
         }, { status: 400})
-        return
+        
     }
     try { 
         const res = await axios.post('https://jsonplaceholder.typicode.com/posts' , {...data}, { 

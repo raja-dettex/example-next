@@ -3,9 +3,9 @@ import Image from "next/image";
 import { useState, useEffect} from 'react'
 import axios from 'axios'
 type FormData = { 
-  title: String, 
-  body: String,
-  userId: String
+  title: string, 
+  body: string,
+  userId: string
 }
 type Post = {
   id: number 
@@ -34,7 +34,7 @@ export default function Home() {
     const res = await fetch('/api/users', {
       method: 'POST',
       headers: { "Content-Type": "application/json"},
-      body: JSON.stringify({...formData, userId: parseInt(formData.userId.toString())})
+      body: JSON.stringify({title: formData.title, body: formData.body, userId: parseInt(formData.userId)})
     })
     const data = await res.json();
     console.log(data)
